@@ -1,0 +1,25 @@
+
+#!/bin/sh
+# $Id$
+# elvis: robintrack	-- Search tickers on Robintrack (Robintrack.net)
+# version 0.1 by Philip Collier webmaster@ab9il.net
+. surfraw || exit 1
+
+w3_usage_hook () {
+    cat <<EOF
+Usage: $w3_argv0 [options] [search words]...
+Description:
+  Surfraw ticker search on Robintrack.net
+EOF
+    w3_global_usage
+}
+
+w3_config
+w3_parse_args "$@"
+# w3_args now contains a list of arguments
+if test -z "$w3_args"; then
+    w3_browse_url "https://robintrack.net/"
+else
+    escaped_args=`w3_url_of_arg $w3_args`
+    w3_browse_url "https://robintrack.net/symbol/${escaped_args}"
+fi
